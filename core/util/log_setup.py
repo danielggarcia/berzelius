@@ -16,11 +16,11 @@ import os
 import logging
 import logging.config
 import yaml
-from config.config_default import config
+from config.configuration import env
 
-__log_cfg_path = config.get("log_config_path")
-__default_level = config.get("log_default_level")
-__env = config.get('environment')
+__log_cfg_path = env.get("log_config_path")
+__default_level = env.get("log_default_level")
+__env = env.get('environment')
 
 print(__name__)
 
