@@ -20,16 +20,21 @@ from selenium import webdriver
 from core.enum.browser import Browser
 from core.factory.webdriver_factory import WebDriverFactory
 from core.util.log_setup import logger
-
 # Press the green button in the gutter to run the script.
+
 if __name__ == '__main__':
     '''
     options = webdriver.ChromeOptions()
     driver = webdriver.Chrome(options=options)
     driver.get('https://google.es')
+        
     '''
-    driver = WebDriverFactory.create_instance(Browser.chrome, config_file_path="config/chrome_defaults.yaml")
+
+
+    driver = WebDriverFactory.create_instance()
     driver.get("https://www.google.es")
 
     time.sleep(2)
     driver.close()
+
+
