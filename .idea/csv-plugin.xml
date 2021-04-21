@@ -10,6 +10,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\core\factory\_chromedriver_factory.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\core\factory\webdriverfactory.py">
           <value>
             <Attribute>

@@ -12,24 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-import time
-
-from selenium import webdriver
-
-from core.enum.browser import Browser
-from core.factory.webdriver_factory import WebDriverFactory
+from core.factory._chromedriver_factory import _ChromeDriverFactory
+from core.factory.browser_options import BrowserOptions
 from core.util.log_setup import logger
+from core.enum.browser import Browser
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    '''
-    options = webdriver.ChromeOptions()
-    driver = webdriver.Chrome(options=options)
-    driver.get('https://google.es')
-    '''
-    driver = WebDriverFactory.create_instance(Browser.chrome, config_file_path="config/chrome_defaults.yaml")
-    driver.get("https://www.google.es")
 
-    time.sleep(2)
-    driver.close()
+class WebDriverFactory:
+    __browserProperties = None
+    __driver = None
+
+    @staticmethod
+    def create_instance(browser: Browser, options: BrowserOptions = None, config_file_path: str = None):
+        try:
+            if browser == Browser.chrome:
+                return _ChromeDriverFactory.create_instance(options, config_file_path)
+        except Exception as e:
+            logger.exception("WebDriverFactory.create_instance(): error creating instance")
+            raise e

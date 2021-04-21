@@ -11,8 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import core.util.log_setup
-from core.util.log_setup import logger
-class WebDriverFactory:
-    __browserProperties = None
-    __driver = None
+
+from enum import Enum
+
+
+class Browser(Enum):
+    chrome = 1
+    firefox = 2
+

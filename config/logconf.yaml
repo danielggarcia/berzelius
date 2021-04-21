@@ -34,9 +34,9 @@ loggers:
     handlers: [ console_handler, file_handler, error_file_handler ]
   prod:
     level: INFO
-    handlers: [ file_handler, error_file_handler ]
+    handlers: [ console_handler, file_handler, error_file_handler ]
 
 root:
   level: NOTSET
-  handlers: [ file_handler, error_file_handler ]
+  handlers: [ console_handler, file_handler, error_file_handler ]
   propagate: yes
