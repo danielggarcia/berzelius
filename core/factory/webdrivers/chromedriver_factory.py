@@ -97,9 +97,13 @@ class ChromeDriverFactory(WebDriverFactoryInterface):
         chrome_options = self.__create_webdriver_options()
 
         try:
-            driver = webdriver.Chrome(executable_path=self.driver_configuration['driver']['executable_path'],
+            driver = webdriver.Chrome(executable_path=chrome_options.driver_executable_path,
                                       chrome_options=chrome_options,
                                       service_args=["--verbose"])
+
+            if "maximized" in self.driver_configuration["driver"] and self.driver_configuration["driver"]["maximized"]:
+                driver.maximize_window()
+
             return driver
 
         except WebDriverException as e:

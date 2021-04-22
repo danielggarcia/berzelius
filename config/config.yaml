@@ -1,3 +1,4 @@
 environment: dev
 log_config_path: config/logconf.yaml
-default_driver_config_file: config/webdrivers/default.yaml
+webdriver_config_dir: config/webdrivers
+default_webdriver_config_file: config/webdrivers/default.yaml

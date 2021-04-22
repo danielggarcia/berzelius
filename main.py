@@ -12,29 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
 import time
-
-from selenium import webdriver
-
-from core.enum.browser import Browser
 from core.factory.webdriver_factory import WebDriverFactory
-from core.util.log_setup import logger
-# Press the green button in the gutter to run the script.
 
 if __name__ == '__main__':
-    '''
-    options = webdriver.ChromeOptions()
-    driver = webdriver.Chrome(options=options)
-    driver.get('https://google.es')
-        
-    '''
+    driver = WebDriverFactory.create_instance("firefox")
+    driver.get("https://www.google.com")
 
-
-    driver = WebDriverFactory.create_instance()
-    driver.get("https://www.google.es")
-
-    time.sleep(2)
+    time.sleep(5)
     driver.close()
 
 

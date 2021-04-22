@@ -56,24 +56,58 @@ class WebDriverFactory:
             current_factory_classname = "{}Factory".format(factory_name)
             factory_class = WebDriverFactory.__dynamic_import(current_factory_module, current_factory_classname)
             factory = factory_class(driver_configuration)
-            
+
             return factory
         except Exception as e:
             logger.exception(__class__.__name__ + ":")
 
 
     @staticmethod
-    def create_instance(config_file_path: str = None):
+    def __search_webdriver_configuration_by_name(browser_name: str = None, exact_match: bool = False):
+        try:
+            config_file_path = ""
+
+            if browser_name is None or browser_name == "":
+                return config_file_path
+
+            file_tree = sorted(os.listdir(env.get("webdriver_config_dir")))
+            for file_i in file_tree:
+                if exact_match and file_i.lower().replace(".yaml") == browser_name.lower().replace(".yaml"):
+                        config_file_path = os.path.join(env.get("webdriver_config_dir", file_i))
+                        break
+                elif browser_name.lower() in file_i.lower():
+                        config_file_path = os.path.join(env.get("webdriver_config_dir"), file_i)
+                        break
+            return config_file_path
+        except Exception as e:
+            logger.exception(__class__.__name__ + ": error while searching for configuration '{}'".format(browser_name))
+
+
+    @staticmethod
+    def create_instance(browser_name: str = None, config_file_path: str = None, exact_match: bool = False):
         """
         Creates a WebDriver instance by providing a YAML configuration path with configuration parameters
+        :param browser_name: name of the browser to drive. This parameter will search in config/webdrivers folder for
+        the first configuration file matching this parameter.
         :param config_file_path: path to YAML configuration file. If not provided, a default instance will be spawned
         loading configuration from config/webdrivers/default.yaml file
+        :param exact_match: if browser_name is provided, search for the whole configuration file or just for part of it
         :return: WebDriver instance
         """
         try:
-            # Load default driver configuration if not provided
-            if config_file_path is None or not os.path.isfile(config_file_path):
-                config_file_path = env.get("default_driver_config_file")
+            config_file_path_by_name = ""
+            if browser_name is not None:
+                config_file_path_by_name = WebDriverFactory.__search_webdriver_configuration_by_name(browser_name,
+                                                                                                     exact_match)
+            # If no config_file_path or browser_name are provided, get the default configuration file
+            if (config_file_path is None or not os.path.isfile(config_file_path)) and config_file_path_by_name == "":
+                config_file_path = env.get("default_webdriver_config_file")
+            # If config file is provided, it will prevail over browser_name
+            elif config_file_path is not None and os.path.isfile(config_file_path):
+                pass
+            # Otherwise, config file will be the first match in the configuration folder
+            else:
+                config_file_path = config_file_path_by_name
 
             # Generate dictionary from YAML, and create an instance of driver factory
             driver_config = WebDriverFactory.__load_configuration(config_file_path)
