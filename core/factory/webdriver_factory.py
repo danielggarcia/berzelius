@@ -15,16 +15,17 @@
 import os.path
 import yaml
 import sys
+
 from core.util.log_setup import logger
 from config.configuration import env
-
+from selenium.webdriver.remote.webdriver import WebDriver
 
 class WebDriverFactory:
     __browserProperties = None
     __driver = None
 
     @staticmethod
-    def __load_configuration(config_file_path: str):
+    def __load_configuration__(config_file_path: str):
         if os.path.exists(config_file_path):
             with open(config_file_path, 'rt') as fd:
                 try:
@@ -37,13 +38,13 @@ class WebDriverFactory:
 
 
     @staticmethod
-    def __dynamic_import(modulename, classname):
+    def __dynamic_import__(modulename, classname):
         module = __import__(modulename, fromlist=[classname])
         target_class = getattr(module, classname)
         return target_class
 
     @staticmethod
-    def __create_factory(driver_configuration: dict):
+    def __create_factory__(driver_configuration: dict):
         try:
             # Extract driver.type field from YAML, and compose the factory name from it using reflection
             # Additional webdriver support can be added just creating additional factories, whose names
@@ -54,7 +55,7 @@ class WebDriverFactory:
             webdriver_factory_package = sys.modules[__name__].__package__ + ".webdrivers"
             current_factory_module = webdriver_factory_package + ".{}_factory".format(factory_name.lower())
             current_factory_classname = "{}Factory".format(factory_name)
-            factory_class = WebDriverFactory.__dynamic_import(current_factory_module, current_factory_classname)
+            factory_class = WebDriverFactory.__dynamic_import__(current_factory_module, current_factory_classname)
             factory = factory_class(driver_configuration)
 
             return factory
@@ -63,7 +64,7 @@ class WebDriverFactory:
 
 
     @staticmethod
-    def __search_webdriver_configuration_by_name(browser_name: str = None, exact_match: bool = False):
+    def __search_webdriver_configuration_by_name__(browser_name: str = None, exact_match: bool = False):
         try:
             config_file_path = ""
 
@@ -84,6 +85,22 @@ class WebDriverFactory:
 
 
     @staticmethod
+    def __apply_extended_options__(driver: WebDriver, options: dict):
+        if "window_position" in options and type(options["window_position"]) is list and len(options["window_position"]) == 2:
+            driver.set_window_position(options["window_position"][0], options["window_position"][1])
+        if "window_size" in options and type(options["window_size"]) is list and len(options["window_size"]) == 2:
+            driver.set_window_size(options["window_size"][0], options["window_size"][1])
+        if "start_maximized" in options and options['start_maximized']:
+            driver.maximize_window()
+        elif "start_minimized" in options and options['start_minimized']:
+            driver.minimize_window()
+        if "implicit_timeout" in options:
+            driver.implicitly_wait(int(options["implicit_timeout"]))
+        if "page_load_timeout" in options:
+            driver.set_page_load_timeout(int(options["page_load_timeout"]))
+
+
+    @staticmethod
     def create_instance(browser_name: str = None, config_file_path: str = None, exact_match: bool = False):
         """
         Creates a WebDriver instance by providing a YAML configuration path with configuration parameters
@@ -97,8 +114,8 @@ class WebDriverFactory:
         try:
             config_file_path_by_name = ""
             if browser_name is not None:
-                config_file_path_by_name = WebDriverFactory.__search_webdriver_configuration_by_name(browser_name,
-                                                                                                     exact_match)
+                config_file_path_by_name = WebDriverFactory.__search_webdriver_configuration_by_name__(browser_name,
+                                                                                                       exact_match)
             # If no config_file_path or browser_name are provided, get the default configuration file
             if (config_file_path is None or not os.path.isfile(config_file_path)) and config_file_path_by_name == "":
                 config_file_path = env.get("default_webdriver_config_file")
@@ -110,11 +127,13 @@ class WebDriverFactory:
                 config_file_path = config_file_path_by_name
 
             # Generate dictionary from YAML, and create an instance of driver factory
-            driver_config = WebDriverFactory.__load_configuration(config_file_path)
-            driver_factory = WebDriverFactory.__create_factory(driver_config)
+            driver_config = WebDriverFactory.__load_configuration__(config_file_path)
+            driver_factory = WebDriverFactory.__create_factory__(driver_config)
 
             # Use factory to create a WebDriver instance
             driver = driver_factory.create_instance()
+            if "extended_options" in driver_config:
+                WebDriverFactory.__apply_extended_options__(driver, driver_config["extended_options"])
 
             return driver
         except Exception as e:

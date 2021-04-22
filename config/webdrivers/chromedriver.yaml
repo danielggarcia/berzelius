@@ -1,7 +1,6 @@
 driver:
   type: "ChromeDriver"
   executable_path: "bin/chromedriver.exe"
-  maximized: True
 options:
   binary_path: ""
   arguments:
@@ -18,3 +17,7 @@ options:
       download.default_directory: ".cache/download"
       credentials_enable_service: False
       profile.password_manager_enabled: False
+extended_options:
+  start_maximized: True
+  implicit_timeout: 10
+  page_load_timeout: 30

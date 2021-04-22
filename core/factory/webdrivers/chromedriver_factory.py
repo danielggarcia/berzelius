@@ -32,10 +32,10 @@ class ChromeDriverFactory(WebDriverFactoryInterface):
         self.config_file_path = config_file_path
 
         if config_file_path is not None and os.path.isfile(config_file_path):
-            self.__load_default_options(config_file_path)
+            self._load_default_options_(config_file_path)
 
 
-    def __load_default_options(self, config_file_path: str = None):
+    def _load_default_options_(self, config_file_path: str = None):
         if config_file_path is None:
             cfg_path = os.path.join("config", "webdrivers", "default.yaml")
         else:
@@ -51,7 +51,7 @@ class ChromeDriverFactory(WebDriverFactoryInterface):
             raise e
 
 
-    def __create_webdriver_options(self):
+    def _create_webdriver_options_(self):
         try:
             chrome_options = webdriver.ChromeOptions()
 
@@ -94,15 +94,12 @@ class ChromeDriverFactory(WebDriverFactoryInterface):
         Creates a ChromeDriver instance by loading configuration parameters provided in constructor
         :return: A configured ChromeDriver instance
         """
-        chrome_options = self.__create_webdriver_options()
+        chrome_options = self._create_webdriver_options_()
 
         try:
             driver = webdriver.Chrome(executable_path=chrome_options.driver_executable_path,
                                       chrome_options=chrome_options,
                                       service_args=["--verbose"])
-
-            if "maximized" in self.driver_configuration["driver"] and self.driver_configuration["driver"]["maximized"]:
-                driver.maximize_window()
 
             return driver
 

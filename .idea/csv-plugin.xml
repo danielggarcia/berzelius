@@ -24,10 +24,24 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\core\factory\webdrivers\chromedriver_factory.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\core\util\log_setup.py">
           <value>
             <Attribute>
               <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\venv\Lib\site-packages\selenium\webdriver\opera\webdriver.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>

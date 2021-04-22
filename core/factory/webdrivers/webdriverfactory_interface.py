@@ -3,7 +3,7 @@ class WebDriverFactoryInterface:
     driver_configuration = {}
     config_file_path = ""
 
-    def __load_default_options(self, config_file_path: str = None):
+    def _load_default_options_(self, config_file_path: str = None):
         """
         Loads default options from config/webdrivers folder and stores it in driver_configuration attribute
         :param config_file_path: path to the YAML file with the configuration
@@ -11,7 +11,7 @@ class WebDriverFactoryInterface:
         """
         pass
 
-    def __create_webdriver_options(self):
+    def _create_webdriver_options_(self):
         """
         Takes the values stored in the generic dictionary driver_configuration and generates a driver-specific
         configuration object.

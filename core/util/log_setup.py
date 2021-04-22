@@ -22,7 +22,6 @@ __log_cfg_path = env.get("log_config_path")
 __default_level = env.get("log_default_level")
 __env = env.get('environment')
 
-print(__name__)
 
 def get_basic_logger(default_level=logging.INFO):
     logging.basicConfig(default_level)

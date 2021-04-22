@@ -32,10 +32,10 @@ class FirefoxDriverFactory(WebDriverFactoryInterface):
         self.config_file_path = config_file_path
 
         if config_file_path is not None and os.path.isfile(config_file_path):
-            self.__load_default_options(config_file_path)
+            self._load_default_options_(config_file_path)
 
 
-    def __load_default_options(self, config_file_path: str = None):
+    def _load_default_options_(self, config_file_path: str = None):
         if config_file_path is None:
             cfg_path = os.path.join("config", "webdrivers", "default.yaml")
         else:
@@ -51,7 +51,7 @@ class FirefoxDriverFactory(WebDriverFactoryInterface):
             raise e
 
 
-    def __create_webdriver_options(self):
+    def _create_webdriver_options_(self):
         try:
             firefox_options = webdriver.FirefoxOptions()
             firefox_profile = webdriver.FirefoxProfile()
@@ -98,7 +98,7 @@ class FirefoxDriverFactory(WebDriverFactoryInterface):
         Creates a FirefoxDriver instance by loading configuration parameters provided in constructor
         :return: A configured FirefoxDriver instance
         """
-        firefox_configuration = self.__create_webdriver_options()
+        firefox_configuration = self._create_webdriver_options_()
         firefox_options = firefox_configuration[0]
         firefox_profile = firefox_configuration[1]
         firefox_capabilities = firefox_configuration[2]
@@ -108,10 +108,6 @@ class FirefoxDriverFactory(WebDriverFactoryInterface):
                                        firefox_options=firefox_options,
                                        firefox_profile=firefox_profile,
                                        desired_capabilities=firefox_capabilities)
-
-            if "maximized" in self.driver_configuration["driver"] and self.driver_configuration["driver"]["maximized"]:
-                driver.maximize_window()
-
             return driver
 
         except WebDriverException as e:
