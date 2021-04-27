@@ -16,4 +16,5 @@ target/
 .venv
 env/
 venv/
+*.log
 

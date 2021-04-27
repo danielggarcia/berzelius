@@ -13,13 +13,27 @@
 # limitations under the License.
 
 import time
+
+from core.factory.page_object_factory import PageObjectFactory
 from core.factory.webdriver_factory import WebDriverFactory
 
-if __name__ == '__main__':
-    driver = WebDriverFactory.create_instance("firefox")
+def test_webdriver_factory():
+    driver = WebDriverFactory.create_instance("chrome")
     driver.get("https://www.google.com")
 
     time.sleep(5)
     driver.close()
 
+def test_page_object_factory():
+    driver = WebDriverFactory.create_instance("firefox")
+    driver.get("https://en.wikipedia.org/wiki/Main_Page")
+    factory = PageObjectFactory(driver)
+    o = factory.create_instance("test.pageobjects.po_main")
+    o.search("binding")
+
+    time.sleep(10)
+    driver.close()
+
+if __name__ == '__main__':
+    test_page_object_factory()
 

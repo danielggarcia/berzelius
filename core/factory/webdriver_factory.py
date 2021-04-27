@@ -20,6 +20,9 @@ from core.util.log_setup import logger
 from config.configuration import env
 from selenium.webdriver.remote.webdriver import WebDriver
 
+from core.util.utils import Utils
+
+
 class WebDriverFactory:
     __browserProperties = None
     __driver = None
@@ -38,12 +41,6 @@ class WebDriverFactory:
 
 
     @staticmethod
-    def __dynamic_import__(modulename, classname):
-        module = __import__(modulename, fromlist=[classname])
-        target_class = getattr(module, classname)
-        return target_class
-
-    @staticmethod
     def __create_factory__(driver_configuration: dict):
         try:
             # Extract driver.type field from YAML, and compose the factory name from it using reflection
@@ -55,7 +52,7 @@ class WebDriverFactory:
             webdriver_factory_package = sys.modules[__name__].__package__ + ".webdrivers"
             current_factory_module = webdriver_factory_package + ".{}_factory".format(factory_name.lower())
             current_factory_classname = "{}Factory".format(factory_name)
-            factory_class = WebDriverFactory.__dynamic_import__(current_factory_module, current_factory_classname)
+            factory_class = Utils.dynamic_import(current_factory_module, current_factory_classname)
             factory = factory_class(driver_configuration)
 
             return factory
@@ -96,8 +93,10 @@ class WebDriverFactory:
             driver.minimize_window()
         if "implicit_timeout" in options:
             driver.implicitly_wait(int(options["implicit_timeout"]))
+            driver.capabilities['timeouts']['implicit'] = int(options["implicit_timeout"])
         if "page_load_timeout" in options:
             driver.set_page_load_timeout(int(options["page_load_timeout"]))
+            driver.capabilities['timeouts']['page_load'] = int(options["page_load_timeout"])
 
 
     @staticmethod

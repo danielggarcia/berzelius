@@ -1,0 +1,4 @@
+classname: POMain
+webelements:
+  we_txt_search: "//input[@type='search']"
+  we_btn_search: "//input[@id='searchButton']"

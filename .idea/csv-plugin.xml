@@ -31,7 +31,28 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\core\page\base_page_object.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\core\util\finder.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\core\util\log_setup.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\definitions\test\pageobjects\po_main.yaml">
           <value>
             <Attribute>
               <option name="separator" value=":" />
