@@ -11,31 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from selenium.webdriver.remote.webelement import WebElement
 
 from core.page.webfragment_object import WebFragmentObject
-from core.page.webpage_object import WebPageObject
+from selenium.webdriver.remote.webelement import WebElement
 
 
-class POMain(WebPageObject):
-    #region WebElements
-    __we_txt_search: WebElement = None
-    __we_btn_search: WebElement = None
-    #endregion
+class FSidebarSection(WebFragmentObject):
+    __we_title: WebElement = None
+    __we_menu: WebElement = None
 
-    #region Fragments
-    __f_sidebar: WebFragmentObject = None
-    #endregion
+    def get_title(self):
+        return self.__we_title.text
 
-    def enter_text(self, text: str):
-        self.set_text(self.__we_txt_search, text)
-
-    def search(self, text: str):
-        self.enter_text(text)
-        self.__we_btn_search.click()
-
-    def goto_main(self):
-        self.__f_sidebar.goto_main()
-
-    def show_titles(self):
-        self.__f_sidebar.show_titles()

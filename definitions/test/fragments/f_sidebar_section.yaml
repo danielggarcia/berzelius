@@ -1,0 +1,4 @@
+classname: "FSidebarSection"
+webelements:
+  we_title: "//h3[@class='vector-menu-heading']/span"
+  we_menu: "//ul[@class='vector-menu-content-list']"

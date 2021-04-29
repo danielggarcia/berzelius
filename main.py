@@ -27,12 +27,18 @@ def test_webdriver_factory():
 def test_page_object_factory():
     driver = WebDriverFactory.create_instance("firefox")
     driver.get("https://en.wikipedia.org/wiki/Main_Page")
-    factory = PageObjectFactory(driver)
-    o = factory.create_instance("test.pageobjects.po_main")
-    o.search("binding")
+    try:
+        factory = PageObjectFactory(driver)
+        o = factory.create_instance("test.pageobjects.po_main")
+        #o.search("binding")
+        o.show_titles()
+        time.sleep(3)
 
-    time.sleep(10)
-    driver.close()
+        time.sleep(3)
+    except Exception as e:
+        print(e)
+    finally:
+        driver.close()
 
 if __name__ == '__main__':
     test_page_object_factory()

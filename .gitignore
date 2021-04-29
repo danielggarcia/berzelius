@@ -8,6 +8,7 @@ parts/
 sdist/
 var/
 log/
+bin/
 *.egg
 .pytest_cache/
 docs/_build/

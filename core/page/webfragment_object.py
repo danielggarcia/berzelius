@@ -11,31 +11,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from selenium.webdriver import ActionChains
 from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.remote.webdriver import WebDriver
+from core.page.web_object import WebObject
 
-from core.page.webfragment_object import WebFragmentObject
-from core.page.webpage_object import WebPageObject
 
+class WebFragmentObject(WebObject):
+    root_webelement: WebElement = None
 
-class POMain(WebPageObject):
-    #region WebElements
-    __we_txt_search: WebElement = None
-    __we_btn_search: WebElement = None
-    #endregion
-
-    #region Fragments
-    __f_sidebar: WebFragmentObject = None
-    #endregion
-
-    def enter_text(self, text: str):
-        self.set_text(self.__we_txt_search, text)
-
-    def search(self, text: str):
-        self.enter_text(text)
-        self.__we_btn_search.click()
-
-    def goto_main(self):
-        self.__f_sidebar.goto_main()
-
-    def show_titles(self):
-        self.__f_sidebar.show_titles()
+    def __init__(self, driver: WebDriver, definition: dict, root_webelement: WebElement):
+        self._driver = driver
+        self._action_chains = ActionChains(self._driver)
+        self._definition = definition
+        self.root_webelement = root_webelement

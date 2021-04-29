@@ -16,6 +16,8 @@ import os.path
 import yaml
 import inspect
 from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.remote.webelement import WebElement
+
 from config.configuration import env
 from core.page.webpage_object import WebPageObject
 from core.util.webfinder import WebFinder
@@ -44,7 +46,7 @@ class PageObjectFactory:
             logger.error(__class__.__name__ + ": " + error_message)
             raise Exception(error_message)
 
-    def create_instance(self, object_module: str):
+    def create_instance(self, object_module: str, root_node: str = None):
         """
         Creates an instance of a PageObject from its object module.
         The factory looks for a .yaml definition file that matches the path of the PageObject inside the 'definitions'
@@ -53,12 +55,16 @@ class PageObjectFactory:
         :return: PageObject instance based on the definition file
         """
         try:
+            root_webelement = None
             object_definition = self.__load_object_definition__(object_module)
-            webobject = self.__create_object__(object_module, object_definition)
+            if WebFinder.is_webelement_present(root_node, self.__driver__):
+                root_webelement = WebFinder.find_webelement(root_node, self.__driver__)
+            webobject = self.__create_object__(object_module, object_definition, root_webelement)
             self.__populate_object__(webobject)
             return webobject
         except Exception as e:
             logger.exception(__class__.__name__ + ": Error creating instance.")
+            raise e
 
     def __load_object_definition__(self, object_module: str):
         """
@@ -69,11 +75,15 @@ class PageObjectFactory:
         :param object_module: module of the PageObject to map
         :return: dictionary with the PageObject definition
         """
-        path_elements = object_module.split(".")
-        relative_path = os.path.join(*path_elements) + ".yaml"
-        relative_path = os.path.join(self.__definitions_path__, relative_path)
-        object_configuration = self.__read_definition_file__(relative_path)
-        return object_configuration
+        try:
+            path_elements = object_module.split(".")
+            relative_path = os.path.join(*path_elements) + ".yaml"
+            relative_path = os.path.join(self.__definitions_path__, relative_path)
+            object_configuration = self.__read_definition_file__(relative_path)
+            return object_configuration
+        except Exception as e:
+            logger.exception(__class__.__name__ + ": Error loading object definition.")
+            raise e
 
     def __read_definition_file__(self, path: str):
         """
@@ -93,11 +103,12 @@ class PageObjectFactory:
             raise e
         return values
 
-    def __create_object__(self, object_module: str, object_definition: dict):
+    def __create_object__(self, object_module: str, object_definition: dict, root_webelement: WebElement = None):
         """
         Loads dynamically the object class and creates an instance
         :param object_module: module where the class to instantiate is located
         :param object_definition: dictionary with the object definition
+        :param root_webelement: parent WebElement of the WebObject
         :return: object instance
         """
         try:
@@ -109,8 +120,10 @@ class PageObjectFactory:
             classmodule = object_module
 
             object_class = Utils.dynamic_import(classmodule, classname)
-            return object_class(self.__driver__, object_definition)
-
+            if root_webelement is None:
+                return object_class(self.__driver__, object_definition)
+            else:
+                return object_class(self.__driver__, object_definition, root_webelement)
         except Exception as e:
             logger.exception(__class__.__name__ + ": Error creating PageObject")
             raise e
@@ -123,8 +136,37 @@ class PageObjectFactory:
         """
         object_content = inspect.getmembers(webobject)
         we_definitions = webobject.get_webelement_definitions()
+        fragment_definitions = webobject.get_fragment_definitions()
+
+        # Get webelement instances from 'webelements' definitions
         for e in we_definitions:
-            candidate_webelement = "_{}__{}".format(webobject.__class__.__name__, e)
-            if len([attribute for attribute in object_content if candidate_webelement == attribute[0]]) == 1:
-                webelement_instance = WebFinder.find_webelement(we_definitions[e], self.__driver__)
-                webobject.__setattr__(candidate_webelement, webelement_instance)
+            try:
+                candidate_webelement = "_{}__{}".format(webobject.__class__.__name__, e)
+                if len([attribute for attribute in object_content if candidate_webelement == attribute[0]]) == 1:
+                    # If WebObject has a root webelement, the search of the webelement must begin from that webelement
+                    # instead from the DOM root node
+                    if hasattr(webobject, "root_webelement"):
+                        root_node = webobject.root_webelement
+                    else:
+                        root_node = self.__driver__
+
+                    webelement_instance = WebFinder.find_webelement(we_definitions[e], root_node)
+                    webobject.__setattr__(candidate_webelement, webelement_instance)
+            except Exception as e:
+                logger.exception(__class__.__name__ + ": Error creating WebElement")
+                raise e
+
+        # Get fragment instances from 'fragments' definitions
+        for f in fragment_definitions:
+            try:
+                candidate_fragment = "_{}__{}".format(webobject.__class__.__name__, f)
+                if len([attribute for attribute in object_content if candidate_webelement == attribute[0]]) == 1:
+                    fragment_module = fragment_definitions[f]["module"]
+                    fragment_root_node = fragment_definitions[f]["root_node"]
+
+                    # Call PageObjectFactory recursively to create children fragments from the root node
+                    fragment_instance = self.create_instance(fragment_module, fragment_root_node)
+                    webobject.__setattr__(candidate_fragment, fragment_instance)
+            except Exception as e:
+                logger.exception(__class__.__name__ + ": Error creating WebFragment")
+                raise e
