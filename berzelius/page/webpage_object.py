@@ -15,7 +15,7 @@ import time
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.remote.webdriver import WebDriver
-from core.page.web_object import WebObject
+from berzelius.page.web_object import WebObject
 
 class WebPageObject(WebObject):
 

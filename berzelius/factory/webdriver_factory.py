@@ -16,11 +16,11 @@ import os.path
 import yaml
 import sys
 
-from core.util.log_setup import logger
+from berzelius.util.log_setup import logger
 from config.configuration import env
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from core.util.utils import Utils
+from berzelius.util.utils import Utils
 
 
 class WebDriverFactory:

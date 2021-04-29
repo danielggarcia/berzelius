@@ -15,8 +15,8 @@
 import os.path
 import yaml
 
-from core.util.log_setup import logger
-from core.factory.webdrivers.webdriverfactory_interface import WebDriverFactoryInterface
+from berzelius.util.log_setup import logger
+from berzelius.factory.webdrivers.webdriverfactory_interface import WebDriverFactoryInterface
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException

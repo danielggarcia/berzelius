@@ -15,8 +15,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
-from core.exception.webelement_not_found_exception import WebElementNotFoundException
-from core.util.log_setup import logger
+from berzelius.exception.webelement_not_found_exception import WebElementNotFoundException
+from berzelius.util.log_setup import logger
 
 
 class WebFinder:

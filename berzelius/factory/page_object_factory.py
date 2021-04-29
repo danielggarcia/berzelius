@@ -19,10 +19,10 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 
 from config.configuration import env
-from core.page.webpage_object import WebPageObject
-from core.util.webfinder import WebFinder
-from core.util.log_setup import logger
-from core.util.utils import Utils
+from berzelius.page.webpage_object import WebPageObject
+from berzelius.util.webfinder import WebFinder
+from berzelius.util.log_setup import logger
+from berzelius.util.utils import Utils
 
 
 class PageObjectFactory:

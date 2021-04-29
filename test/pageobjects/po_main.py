@@ -13,8 +13,8 @@
 # limitations under the License.
 from selenium.webdriver.remote.webelement import WebElement
 
-from core.page.webfragment_object import WebFragmentObject
-from core.page.webpage_object import WebPageObject
+from berzelius.page.webfragment_object import WebFragmentObject
+from berzelius.page.webpage_object import WebPageObject
 
 
 class POMain(WebPageObject):

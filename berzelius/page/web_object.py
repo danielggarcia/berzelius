@@ -16,7 +16,7 @@ import time
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.webelement import WebElement
-from core.util.log_setup import logger
+from berzelius.util.log_setup import logger
 
 class WebObject:
     _driver: WebDriver

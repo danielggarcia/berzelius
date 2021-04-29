@@ -14,8 +14,8 @@
 
 import time
 
-from core.factory.page_object_factory import PageObjectFactory
-from core.factory.webdriver_factory import WebDriverFactory
+from berzelius.factory.page_object_factory import PageObjectFactory
+from berzelius.factory.webdriver_factory import WebDriverFactory
 
 def test_webdriver_factory():
     driver = WebDriverFactory.create_instance("chrome")

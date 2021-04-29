@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from core.page.webfragment_object import WebFragmentObject
+from berzelius.page.webfragment_object import WebFragmentObject
 from selenium.webdriver.remote.webelement import WebElement
 
 
