@@ -19,7 +19,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 
 from config.configuration import env
-from berzelius.page.webpage_object import WebPageObject
+from berzelius.page.pageobject import PageObject
 from berzelius.util.webfinder import WebFinder
 from berzelius.util.log_setup import logger
 from berzelius.util.utils import Utils
@@ -128,10 +128,10 @@ class PageObjectFactory:
             logger.exception(__class__.__name__ + ": Error creating PageObject")
             raise e
 
-    def __populate_object__(self, webobject: WebPageObject):
+    def __populate_object__(self, webobject: PageObject):
         """
-        Injects the members of the WebPageObject from its definitions
-        :param webobject: WebPageObject whose members are going to be injected
+        Injects the members of the PageObject from its definitions
+        :param webobject: PageObject whose members are going to be injected
         :return: void
         """
         object_content = inspect.getmembers(webobject)

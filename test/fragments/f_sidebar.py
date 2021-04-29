@@ -12,17 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from berzelius.page.webfragment_object import WebFragmentObject
+from berzelius.page.fragment import Fragment
 from selenium.webdriver.remote.webelement import WebElement
 
 
-class FSidebar(WebFragmentObject):
+class FSidebar(Fragment):
     __we_link_logo: WebElement = None
 
-    __f_section_contribute: WebFragmentObject
-    __f_section_tools: WebFragmentObject
-    __f_section_print_export: WebFragmentObject
-    __f_section_languages: WebFragmentObject
+    __f_section_contribute: Fragment
+    __f_section_tools: Fragment
+    __f_section_print_export: Fragment
+    __f_section_languages: Fragment
 
     def goto_main(self):
         self.__we_link_logo.click()

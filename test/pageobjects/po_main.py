@@ -13,18 +13,18 @@
 # limitations under the License.
 from selenium.webdriver.remote.webelement import WebElement
 
-from berzelius.page.webfragment_object import WebFragmentObject
-from berzelius.page.webpage_object import WebPageObject
+from berzelius.page.fragment import Fragment
+from berzelius.page.pageobject import PageObject
 
 
-class POMain(WebPageObject):
+class POMain(PageObject):
     #region WebElements
     __we_txt_search: WebElement = None
     __we_btn_search: WebElement = None
     #endregion
 
     #region Fragments
-    __f_sidebar: WebFragmentObject = None
+    __f_sidebar: Fragment = None
     #endregion
 
     def enter_text(self, text: str):

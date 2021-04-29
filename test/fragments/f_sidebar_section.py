@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from berzelius.page.webfragment_object import WebFragmentObject
+from berzelius.page.fragment import Fragment
 from selenium.webdriver.remote.webelement import WebElement
 
 
-class FSidebarSection(WebFragmentObject):
+class FSidebarSection(Fragment):
     __we_title: WebElement = None
     __we_menu: WebElement = None
 
