@@ -1,0 +1,10 @@
+classname: "POMain"
+webelements:
+  we_txt_search:
+    by: "xpath"
+    locator: "//input[@type='search']"
+  we_btn_search: "//input[@id='searchButton']"
+fragments:
+  f_sidebar:
+    module: "test.fragments.f_sidebar"
+    root_node: "//div[@id='mw-panel']"

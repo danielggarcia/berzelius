@@ -1,0 +1,16 @@
+classname: "FSidebar"
+webelements:
+  we_link_logo: "//div[@id='p-logo']/a"
+fragments:
+  f_section_contribute:
+    module: "test.fragments.f_sidebar_section"
+    root_node: "//nav[@id='p-interaction']"
+  f_section_tools:
+    module: "test.fragments.f_sidebar_section"
+    root_node: "//nav[@id='p-tb']"
+  f_section_print_export:
+    module: "test.fragments.f_sidebar_section"
+    root_node: "//nav[@id='p-coll-print_export']"
+  f_section_languages:
+    module: "test.fragments.f_sidebar_section"
+    root_node: "//nav[@id='p-lang']"
