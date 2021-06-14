@@ -1,4 +1,4 @@
-# Copyright [2021] [Daniel Garcia <contacto {at} danigarcia.org]
+# Copyright [2021] [Daniel Garcia <contacto {at} danigarcia.org>]
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ import inspect
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 
+from berzelius.webelement.dynamic_webelement import DynamicWebElement
 from config.configuration import env
 from berzelius.page.pageobject import PageObject
 from berzelius.util.webfinder import WebFinder
@@ -149,9 +150,12 @@ class PageObjectFactory:
                         root_node = webobject.root_webelement
                     else:
                         root_node = self.__driver__
-
-                    webelement_instance = WebFinder.find_webelement(we_definitions[e], root_node)
-                    webobject.__setattr__(candidate_webelement, webelement_instance)
+                    if isinstance(webobject.__getattribute__(candidate_webelement), str) and webobject.__getattribute__(candidate_webelement) == DynamicWebElement.empty():
+                        webelement_instance = DynamicWebElement(we_definitions[e], root_node)
+                        webobject.__setattr__(candidate_webelement, webelement_instance)
+                    else:
+                        webelement_instance = WebFinder.find_webelement(we_definitions[e], root_node)
+                        webobject.__setattr__(candidate_webelement, webelement_instance)
             except Exception as e:
                 logger.exception(__class__.__name__ + ": Error creating WebElement")
                 raise e

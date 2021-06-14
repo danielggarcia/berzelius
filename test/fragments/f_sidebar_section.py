@@ -1,4 +1,4 @@
-# Copyright [2021] [Daniel Garcia <contacto {at} danigarcia.org]
+# Copyright [2021] [Daniel Garcia <contacto {at} danigarcia.org>]
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,16 @@
 
 from berzelius.page.fragment import Fragment
 from selenium.webdriver.remote.webelement import WebElement
+from berzelius.webelement.dynamic_webelement import DynamicWebElement
 
 
 class FSidebarSection(Fragment):
-    __we_title: WebElement = None
+    __dwe_title: WebElement = DynamicWebElement.empty()
     __we_menu: WebElement = None
 
     def get_title(self):
-        return self.__we_title.text
+        title = self.__dwe_title.locate()
+        if title is not None:
+            self.__dwe_title = title
+        return self.__dwe_title.text
 

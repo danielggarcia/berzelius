@@ -11,24 +11,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-from berzelius.page.fragment import Fragment
 from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.remote.webdriver import WebDriver
+
+from berzelius.factory.page_object_factory import PageObjectFactory
+from berzelius.page.fragment import Fragment
 
 
-class FSidebar(Fragment):
-    __we_link_logo: WebElement = None
+class DynamicFragment(Fragment):
 
-    __f_section_navigation: Fragment
-    __f_section_tools: Fragment
-    __f_section_print_export: Fragment
-    __f_section_languages: Fragment
+    def __init__(self, driver: WebDriver, object_module: str, root_webelement: WebElement):
+        self._driver = driver
+        self._object_module = object_module
+        self.root_webelement = root_webelement
 
-    def goto_main(self):
-        self.__we_link_logo.click()
-
-    def show_titles(self):
-        print(self.__f_section_navigation.get_title())
-        print(self.__f_section_tools.get_title())
-        print(self.__f_section_print_export.get_title())
-        print(self.__f_section_languages.get_title())
+    def locate(self):
+        factory = PageObjectFactory(self._driver)
+        dynamic_fragment = factory.create_instance(self._object_module, self.root_webelement)
+        self.__dict__.update(dynamic_fragment.__dict__)

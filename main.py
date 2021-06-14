@@ -18,7 +18,7 @@ from berzelius.factory.page_object_factory import PageObjectFactory
 from berzelius.factory.webdriver_factory import WebDriverFactory
 from berzelius.webelement.dynamic_webelement import DynamicWebElement
 from berzelius.util.webfinder import WebFinder
-
+from test.tests import TestRunner
 
 def test_webdriver_factory():
     driver = WebDriverFactory.create_instance("chrome")
@@ -51,5 +51,9 @@ def test_page_object_factory():
         driver.quit()
 
 if __name__ == '__main__':
-    test_page_object_factory()
+    #TestRunner.test_webdriverfactory()
+    #TestRunner.test_webelements()
+    TestRunner.test_webfragments()
+
+
 

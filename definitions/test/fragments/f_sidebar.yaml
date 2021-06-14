@@ -2,9 +2,9 @@ classname: "FSidebar"
 webelements:
   we_link_logo: "//div[@id='p-logo']/a"
 fragments:
-  f_section_contribute:
+  f_section_navigation:
     module: "test.fragments.f_sidebar_section"
-    root_node: "//nav[@id='p-interaction']"
+    root_node: "//nav[@id='p-navigation']"
   f_section_tools:
     module: "test.fragments.f_sidebar_section"
     root_node: "//nav[@id='p-tb']"
