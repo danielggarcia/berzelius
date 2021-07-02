@@ -95,7 +95,7 @@ class PageObjectFactory:
         values = {}
         try:
             if os.path.exists(path) and os.path.isfile(path):
-                with open(path, 'rt') as fd:
+                with open(path, 'rt', encoding='utf-8') as fd:
                     values = yaml.safe_load(fd.read())
             else:
                 raise Exception("File not found")
@@ -164,7 +164,7 @@ class PageObjectFactory:
         for f in fragment_definitions:
             try:
                 candidate_fragment = "_{}__{}".format(webobject.__class__.__name__, f)
-                if len([attribute for attribute in object_content if candidate_webelement == attribute[0]]) == 1:
+                if len([attribute for attribute in object_content if candidate_fragment == attribute[0]]) == 1:
                     fragment_module = fragment_definitions[f]["module"]
                     fragment_root_node = fragment_definitions[f]["root_node"]
 

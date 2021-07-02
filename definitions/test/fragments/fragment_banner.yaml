@@ -1,0 +1,7 @@
+classname: "FragmentBanner"
+webelements:
+  w_link_home: "descendant::div[@class='logo']/a"
+  w_img_logo: "descendant::div[@class='logo']/a/img"
+  w_txt_sitename: "descendant::div[@id='site-name']/a"
+  w_txt_slogan: "descendant::div[@id='site-slogan']"
+  w_link_sponsor: "descendant::img[@class='cbt']"

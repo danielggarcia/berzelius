@@ -14,16 +14,33 @@
 
 from berzelius.page.fragment import Fragment
 from selenium.webdriver.remote.webelement import WebElement
-from berzelius.webelement.dynamic_webelement import DynamicWebElement
 
 
-class FSidebarSection(Fragment):
-    __dwe_title: WebElement = DynamicWebElement.empty()
-    __we_menu: WebElement = None
+class FragmentBanner(Fragment):
 
-    def get_title(self):
-        title = self.__dwe_title.locate()
-        if title is not None:
-            self.__dwe_title = title
-        return self.__dwe_title.text
+    #region WebElements
+    __w_link_home: WebElement = None
+    __w_img_logo: WebElement = None
+    __w_txt_sitename: WebElement = None
+    __w_txt_slogan: WebElement = None
+    __w_link_sponsor: WebElement = None
+    #endregion
 
+    #region Methods
+
+    def logo_click(self):
+        self.__w_link_home.click()
+
+    def sponsor_click(self):
+        self.__w_link_sponsor.click()
+
+    def get_site_name(self):
+        return self.__w_txt_sitename.text
+
+    def get_slogan_text(self):
+        return self.__w_txt_slogan.text
+
+    def get_logo_image_source(self):
+        return self.__w_img_logo.get_attribute('src')
+
+    #endregion

@@ -1,11 +1,5 @@
 classname: "POMain"
-webelements:
-  we_txt_search:
-    by: "xpath"
-    locator: "//input[@type='search']"
-  we_btn_search: "//input[@id='searchButton']"
-  dwe_li_talk: "//li[@id='ca-talk']"
 fragments:
-  f_sidebar:
-    module: "test.fragments.f_sidebar"
-    root_node: "//div[@id='mw-panel']"
+  fragment_banner:
+    module: "test.fragments.fragment_banner"
+    root_node: "//div[contains(@class, 'topper')]"
